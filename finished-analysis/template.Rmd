@@ -1,0 +1,29 @@
+---
+title: "Personality Report"
+output: pdf_document
+---
+
+```{r results='hide', echo =FALSE, message=FALSE}
+library(ProjectTemplate)
+load.project()
+```
+
+
+```{r echo = FALSE}
+focalid <- 66817
+fcases <- ccases[ccases$id == focalid, ]
+fcases$genderf
+fcases$age
+
+
+cbind(raw =  unlist(fcases[, v$scales]),
+      percentile = unlist(fcases[, v$percentiles])) 
+
+par(mfrow= c(3,2))
+for (i in v$scales) {
+    hist(ccases[,i], main = i, breaks = 50, xlim = c(1,6),
+         xlab = focalid) 
+    abline(v = fcases[,i], col = "blue")
+}
+
+```

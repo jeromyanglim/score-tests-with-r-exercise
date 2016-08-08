@@ -1,0 +1,17 @@
+{
+    "contents" : "# Initialise Project\n```{r knitr_configuration}\nlibrary(knitr)\nopts_knit$set(root.dir = normalizePath('../')) # required when rmd is in subdirectory\n```\n\n```{r load_project}\nlibrary(ProjectTemplate); load.project()\n```             \n\n# Explore\n```{r}\n\n# reliability\nround(sc$alpha, 2)\n\n\n# distribution of each of the big 5\npsych::describe(ccases[,v$scales])\nhist(ccases[,v$scales])\n\n\n# compare personality by gender\ndescribeBy(ccases[,v$scales], group = ccases$genderf) \nt.test(agreeableness ~ genderf, ccases)\n\n\n# correlate personality variables\nbig5cor <- cor(ccases[,v$scales])\nround(big5cor, 2)\n\n\n# examine relationship between age and personality\nlibrary(ggplot2)\nggplot(ccases, aes(x = age, y = agreeableness)) + geom_point() + geom_smooth()\n\nfor (i in v$scales) {\n    p <- ggplot(ccases, aes_string(x = \"age\", y = i)) + \n    geom_point() + geom_smooth() + ylim(1,6)\n    print(p)\n}\n\n\n```\n\n\n",
+    "created" : 1470271245092.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "2874410275",
+    "id" : "EFC0461B",
+    "lastKnownWriteTime" : 1470302032,
+    "path" : "~/teaching/org-research-methods-hps724/2016/content/04-r-excel-lab/r-exercise/finished-analysis/reports/explore.rmd",
+    "project_path" : "reports/explore.rmd",
+    "properties" : {
+    },
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "type" : "r_markdown"
+}

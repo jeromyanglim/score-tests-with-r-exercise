@@ -1,0 +1,17 @@
+{
+    "contents" : "# Example preprocessing script.\n# library(ProjectTemplate); load.project(list(munging=FALSE)) # use to debug munging file\n\n\n# dput(names(rcases))\n# dput(names(meta.bfi))\nv <- list()\nv$items <- c(\"a1\", \"a2\", \"a3\", \"a4\", \"a5\", \"c1\", \"c2\", \"c3\", \"c4\", \"c5\", \n             \"e1\", \"e2\", \"e3\", \"e4\", \"e5\", \"n1\", \"n2\", \"n3\", \"n4\", \"n5\", \"o1\", \n             \"o2\", \"o3\", \"o4\", \"o5\")\nv$scales <- c(\"agreeableness\",  \"conscientiousness\", \"extraversion\", \"neuroticism\", \"openness\")\n\n\n# recode gender and education\nrcases$genderf <- factor(rcases$gender, c(1,2), c(\"male\", \"female\")) # i.e., 1 = male, 2 = female\ntable(rcases$education)\nrcases$educationf <- factor(rcases$education, c(1,2,3,4,5), c(\"HS\", \"finished HS\", \"some college\",\n                                                             \"college graduate\", \"graduate degree\")) # i.e., 1 = male, 2 = female\n\n# check itmem ranges\nHmisc::describe(rcases[,v$items])\npsych::describe(rcases[,v$items])\nsapply(rcases[,v$items], function(X) range(X, na.rm = TRUE))\nsapply(rcases[,v$items], table)\n\nrcases$nmiss <- apply(rcases, 1, function(X) sum(is.na(X)))\n\nsapply(rcases, function(X) sum(is.na(X)))\n\ntable(rcases$nmiss)\nrcases$retain <- rcases$nmiss < 4\n\nccases <- rcases[ rcases$retain, ]\n\n\n\n# score tests\nsc <- scoreItems(meta.bfi[,v$scales], ccases[,meta.bfi$name])\nccases[,colnames(sc$scores)] <- sc$scores\n\nprint(sc, short = FALSE)\n\n# create quantiles\npercentile_rank <- function(x, digits = 1) {\n    prank <- rank(x)/ length(x) * 100\n    round(prank, digits)\n}\nv$percentiles <- paste0(\"perc_\", v$scales)\n    \nccases[,v$percentiles] <- sapply(ccases[,v$scales], \n                            function(X) percentile_rank(X))\n\nwrite.csv(ccases, file = \"output/copy-for-excel.csv\", na = \"\")\n\n\n\n                                \n\n",
+    "created" : 1470297942514.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "1914150123",
+    "id" : "8E76DB32",
+    "lastKnownWriteTime" : 1470301348,
+    "path" : "~/teaching/org-research-methods-hps724/2016/content/04-r-excel-lab/r-exercise/finished-analysis/munge/01-munge.R",
+    "project_path" : "munge/01-munge.R",
+    "properties" : {
+    },
+    "relative_order" : 2,
+    "source_on_save" : false,
+    "type" : "r_source"
+}
